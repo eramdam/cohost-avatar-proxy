@@ -9,7 +9,9 @@ app.get("/", async (req, reply) => {
   return reply.status(200).type("text/html").send("OK");
 });
 
-app.get("/avatar", async (req, reply) => {
+app.get<{
+  Querystring: { handle: string };
+}>("/avatar", async (req, reply) => {
   const { handle } = req.query;
 
   if (!handle) {
@@ -29,7 +31,7 @@ app.get("/avatar", async (req, reply) => {
     .redirect(avatarUrl);
 });
 
-async function grabImage(handle) {
+async function grabImage(handle: string) {
   const page = await fetch(`https://cohost.org/${handle}`, {
     headers: {
       "User-Agent": "cohost-avatar-proxy",
@@ -49,7 +51,10 @@ async function grabImage(handle) {
   }
 }
 
-export default async function handler(req, reply) {
-  await app.ready();
-  app.server.emit("request", req, reply);
-}
+app.listen({ port: 8080 }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server listening at ${address}`);
+});

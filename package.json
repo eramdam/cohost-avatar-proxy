@@ -4,11 +4,16 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "vercel": "vercel dev"
+    "typecheck": "tsc --noEmit -p .",
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts"
   },
   "dependencies": {
+    "@types/node": "^22.7.5",
     "cheerio": "^1.0.0",
     "fastify": "^4.25.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
     "vercel": "^37.6.3"
   }
 }
