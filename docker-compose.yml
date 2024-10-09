@@ -1,0 +1,15 @@
+services:
+  app:
+    image: node:22-alpine
+    command: sh -c "npm ci && npm run build && node dist/server.js"
+    ports:
+      - 5555:80
+    working_dir: /app
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./:/app
+    environment:
+      PORT: 80
+      NODE_ENV: production

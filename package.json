@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "build": "tsc -p .",
     "typecheck": "tsc --noEmit -p .",
     "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts"
