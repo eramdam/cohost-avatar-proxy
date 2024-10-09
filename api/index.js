@@ -22,7 +22,7 @@ app.get("/avatar", async (req, reply) => {
     return reply.code(404).send("Not found");
   }
 
-  const avatarUrl = `${avatar}?dpr=2&width=80&height=80&fit=cover&auto=webp`;
+  const avatarUrl = `${avatar}?width=60&height=60&fit=cover&auto=webp`;
 
   return reply.redirect(avatarUrl);
 });
