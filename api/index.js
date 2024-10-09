@@ -2,7 +2,7 @@ import Fastify from "fastify";
 import * as cheerio from "cheerio";
 
 const app = Fastify({
-  logger: true,
+  logger: false,
 });
 
 app.get("/", async (req, reply) => {
@@ -37,8 +37,12 @@ async function grabImage(handle) {
     const html = await page.text();
     const $ = cheerio.load(html);
 
-    return $('meta[property="og:image"]').attr("content");
+    const configRaw = $('script[id="__COHOST_LOADER_STATE__"]').text();
+    const config = JSON.parse(configRaw);
+
+    return config["project-page-view"].project.avatarPreviewURL;
   } catch (e) {
+    console.error(e);
     return undefined;
   }
 }
