@@ -54,7 +54,7 @@ async function grabImage(handle: string): Promise<string | undefined> {
   }
 }
 
-app.listen({ port: 80 }, (err, address) => {
+app.listen({ port: process.env.PORT ?? 5555 }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
