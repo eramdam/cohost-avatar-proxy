@@ -28,7 +28,11 @@ app.get("/avatar", async (req, reply) => {
 });
 
 async function grabImage(handle) {
-  const page = await fetch(`https://cohost.org/${handle}`);
+  const page = await fetch(`https://cohost.org/${handle}`, {
+    headers: {
+      "User-Agent": "cohost-avatar-proxy",
+    },
+  });
   try {
     const html = await page.text();
     const $ = cheerio.load(html);
