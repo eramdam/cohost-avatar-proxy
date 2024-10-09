@@ -24,7 +24,9 @@ app.get("/avatar", async (req, reply) => {
 
   const avatarUrl = `${avatar}?width=60&height=60&fit=cover&auto=webp`;
 
-  return reply.redirect(avatarUrl);
+  return reply
+    .header("Cache-Control", "max-age=31536000, stale-while-revalidate=86400")
+    .redirect(avatarUrl);
 });
 
 async function grabImage(handle) {
