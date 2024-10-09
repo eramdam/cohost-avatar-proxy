@@ -1,35 +1,32 @@
-import Fastify from "fastify";
 import * as cheerio from "cheerio";
+import express from "express";
+
+const app = express();
+const port = process.env.PORT || 8080;
 
 const dumbCache = new Map<string, string>();
 
-const app = Fastify({
-  logger: false,
+app.get("/", (_req, res) => {
+  return res.sendStatus(200);
 });
 
-app.get("/", async (req, reply) => {
-  return reply.status(200).type("text/html").send("OK");
-});
-
-app.get<{
-  Querystring: { handle: string };
-}>("/avatar", async (req, reply) => {
-  const { handle } = req.query;
+app.get("/avatar", async (req, res) => {
+  const handle = String(req.query.handle);
 
   if (!handle) {
-    return reply.code(404).send("Not found");
+    return res.status(404).send("Not found");
   }
 
   const avatar = dumbCache.get(handle) ?? (await grabImage(handle));
 
   if (!avatar) {
-    return reply.code(404).send("Not found");
+    return res.status(404).send("Not found");
   }
 
   const avatarUrl = `${avatar}?width=60&height=60&fit=cover&auto=webp`;
   dumbCache.set(handle, avatarUrl);
 
-  return reply
+  return res
     .header("Cache-Control", "max-age=31536000, stale-while-revalidate=86400")
     .redirect(avatarUrl);
 });
@@ -54,11 +51,10 @@ async function grabImage(handle: string): Promise<string | undefined> {
   }
 }
 
-// @ts-expect-error
-app.listen({ port: process.env.PORT ?? 5555 }, (err, address) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
-  console.log(`Server listening at ${address}`);
+app.all("*", (req, res) => {
+  res.sendStatus(404);
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
