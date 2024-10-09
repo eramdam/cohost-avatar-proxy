@@ -1,6 +1,8 @@
 import Fastify from "fastify";
 import * as cheerio from "cheerio";
 
+const dumbCache = new Map<string, string>();
+
 const app = Fastify({
   logger: false,
 });
@@ -18,20 +20,21 @@ app.get<{
     return reply.code(404).send("Not found");
   }
 
-  const avatar = await grabImage(handle);
+  const avatar = dumbCache.get(handle) ?? (await grabImage(handle));
 
   if (!avatar) {
     return reply.code(404).send("Not found");
   }
 
   const avatarUrl = `${avatar}?width=60&height=60&fit=cover&auto=webp`;
+  dumbCache.set(handle, avatarUrl);
 
   return reply
     .header("Cache-Control", "max-age=31536000, stale-while-revalidate=86400")
     .redirect(avatarUrl);
 });
 
-async function grabImage(handle: string) {
+async function grabImage(handle: string): Promise<string | undefined> {
   const page = await fetch(`https://cohost.org/${handle}`, {
     headers: {
       "User-Agent": "cohost-avatar-proxy",
