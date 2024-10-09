@@ -54,6 +54,7 @@ async function grabImage(handle: string): Promise<string | undefined> {
   }
 }
 
+// @ts-expect-error
 app.listen({ port: process.env.PORT ?? 5555 }, (err, address) => {
   if (err) {
     console.error(err);
