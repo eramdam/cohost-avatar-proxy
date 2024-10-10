@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p .",
     "typecheck": "tsc --noEmit -p .",
-    "start": "tsx src/server.ts",
+    "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts"
   },
   "dependencies": {
