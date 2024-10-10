@@ -26,6 +26,7 @@ app.get("/avatar/:handle", async (req, res) => {
       "Cache-Control",
       "public, s-maxage=604800, max-age=3600, stale-while-revalidate=31536000"
     )
+    .header("Access-Control-Allow-Origin", "*")
     .redirect(avatarUrl);
 });
 
