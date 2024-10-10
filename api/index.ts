@@ -1,7 +1,6 @@
 import express from "express";
 
 const app = express();
-const port = process.env.PORT || 8080;
 
 app.get("/", (_req, res) => {
   return res.sendStatus(200);
@@ -27,6 +26,7 @@ app.get("/avatar/:handle", async (req, res) => {
       "Cache-Control",
       "public, s-maxage=604800, max-age=3600, stale-while-revalidate=31536000"
     )
+    .header("Access-Control-Allow-Origin", "*")
     .redirect(avatarUrl);
 });
 
@@ -53,6 +53,6 @@ app.all("*", (req, res) => {
   res.sendStatus(404);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.listen(3000, () => console.log("Server ready on port 3000."));
+
+export default app;
