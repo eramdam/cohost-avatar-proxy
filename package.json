@@ -4,13 +4,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node api/index.ts"
+    "start": "tsx api/index.ts",
+    "build": "tsc -p ."
   },
   "dependencies": {
     "express": "^4.21.1",
-    "typescript": "^5.6.3"
-  },
-  "devDependencies": {
+    "typescript": "^5.6.3",
     "@types/express": "^4.17.21",
     "@types/node": "^22.7.5",
     "tsx": "^4.19.1"
